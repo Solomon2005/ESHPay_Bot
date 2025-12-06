@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from time import sleep
-from setings import url_cards
+from settings.setings import url_cards
 
 headers = {
     'User-Agent': 'Mozilla/5.0'
