@@ -1,3 +1,7 @@
 import os
 
-url_cards = os.getenv('URL_Cards')
+from dotenv import load_dotenv
+
+load_dotenv()
+url_book = os.getenv('URL_BOOK')
+url_bot = os.getenv('URL_BOT')
