@@ -9,9 +9,6 @@ from utils.utils import get_chak_mess
 
 url = f'https://api.telegram.org/bot{url_bot}/'
 
-def get_chak_mess():
-    update_response = requests.get(f'{url}{"getUpdates"}').json()
-    print(json.dumps(update_response, indent=4,  ensure_ascii=False))
 
 def chack_Notes_csv():
     if not os.path.exists('dataNotes.csv'):
