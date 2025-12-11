@@ -6,12 +6,10 @@ from body.batton import *
 
 url = f'https://api.telegram.org/bot{url_bot}/'
 
-def get_chak_mess():
-    update_response = requests.get(f'{url}{"getUpdates"}').json()
-    print(json.dumps(update_response, indent=4,  ensure_ascii=False))
+def get_chak_mess(message):
+    print(json.dumps(message, indent=4,  ensure_ascii=False))
 
 def send_message_text(chat_id, text):
-    update_response = requests.get(f'{url}{"getUpdates"}').json()
     params = {
         'chat_id': chat_id,
         'text': text
@@ -19,17 +17,19 @@ def send_message_text(chat_id, text):
     return requests.post(f'{url}{'sendMessage'}', params=params)
 
 def messages(message):
-    update_response = requests.get(f'{url}{"getUpdates"}').json()
     chat_id = message['chat']['id']
-    text = message['text']
-
-    if text == '/start':
-        start_button_message(chat_id)
-    if text == '/help':
-        send_message_text(chat_id,'помощь')
+    if "text" in message:
+        text = message['text']
+        if text == '/start':
+            start_button_message(chat_id)
+        if text == '/help':
+            send_message_text(chat_id,'помощь')
+    if 'photo' in message:
+        send_message_text(chat_id,"нахуй мне твоё фото")
+    if 'document' in message:
+        send_message_text(chat_id,"Засунь себе свой документ")
 
 def buttom_message(callback):
-    update_response = requests.get(f'{url}{"getUpdates"}').json()
     chat_id = callback['from']['id']
     text = callback['data']
     if text == 'btnSearch':
@@ -40,7 +40,6 @@ def buttom_message(callback):
         send_message_text(chat_id,'Коты')
     if text == "btnLocation":
         send_message_text(chat_id, 'Локация')
-
 
 
 

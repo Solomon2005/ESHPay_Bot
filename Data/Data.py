@@ -17,8 +17,6 @@ def chack_Notes_csv():
             writer.writerow(['ID','Name', 'Notes'])
 
 def add_new_notes():
-    update_response = requests.get(f'{url}{"getUpdates"}').json()
-
     if not update_response['result']:
         return
     last_msg = update_response['result'][-1]

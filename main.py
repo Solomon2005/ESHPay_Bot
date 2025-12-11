@@ -10,16 +10,14 @@ from utils.utils import *
 def main():
     last_update_id = 0
     while True:
+        time.sleep(1)
         try:
             response = requests.get(f'{url}getUpdates', params={'offset': last_update_id, 'timeout': 10}).json()
+            get_chak_mess(response)
             for update in response['result']:
                 last_update_id = update['update_id']+1
                 if 'message' in update:
                     messages(update['message'])
-                if 'location' in update:
-                    pass
-                if 'photo' in update:
-                    pass
                 elif 'callback_query' in update:
                     buttom_message(update['callback_query'])
         except:

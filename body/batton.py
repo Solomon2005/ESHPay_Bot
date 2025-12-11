@@ -5,7 +5,6 @@ from settings.setings import url_bot
 url = f'https://api.telegram.org/bot{url_bot}/'
 
 def start_button_message(chat_id):
-    update_response = requests.get(f'{url}{"getUpdates"}').json()
     keyboard = {
         'inline_keyboard': [
             [{"text": " Поиск", "callback_data": "btnSearch"}],
@@ -26,7 +25,6 @@ def start_button_message(chat_id):
     return requests.post(f'{url}{"sendMessage"}', params=params)
 
 def Search_genre_button_message(chat_id):
-    update_response = requests.get(f'{url}{"getUpdates"}').json()
     keyboard = {
         'inline_keyboard': [
             [{"text": "Фантастика", "callback_data": "fantasy"}],#1
@@ -51,7 +49,6 @@ def Search_genre_button_message(chat_id):
     return requests.post(f'{url}{"sendMessage"}', params=params)
 
 
-updates = requests.get(f'{url}getUpdates').json()
 
 
 
