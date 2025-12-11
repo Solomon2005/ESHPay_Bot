@@ -1,8 +1,7 @@
 import requests
 import json
-from settings.setings import url_bot
+from settings.setings import url_bot, url
 
-url = f'https://api.telegram.org/bot{url_bot}/'
 
 def start_button_message(chat_id):
     keyboard = {
@@ -60,7 +59,7 @@ def Notes_button_message(chat_id):
 
     params = {
         "chat_id": chat_id,
-        "text": '',
+        "text": 'заметки',
         "reply_markup": json.dumps(keyboard)
     }
     return requests.post(f'{url}{"sendMessage"}', params=params)
