@@ -12,16 +12,17 @@ def chack_Notes_csv():
             writer.writerow(['ID','Name', 'Notes'])
 
 def add_new_notes(message):
+    chat_id = message['chat']['id']
     try:
-        Notes = message['text'][9:]
-        name = message['chat']['username']
-        chat_id = message['chat']['id']
+        Notes = message['text'][8:]
+        name = message['chat'].get('username') or message['chat'].get('first_name')
         new_row=[chat_id, name, Notes]
         with open('dataNotes.csv', 'a', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(new_row)
+
     except ValueError:
-        send_message_text(message['chat']['id'], "Заметка не получилась")
+        send_message_text(chat_id, "Заметка не получилась")
 
 def get_notes_csv(callback):
     chat_id = callback['from']['id']
@@ -30,6 +31,3 @@ def get_notes_csv(callback):
         for row in reader:
             if row['ID'] == str(chat_id):
                 send_message_text(chat_id, row['Notes'])
-
-
-

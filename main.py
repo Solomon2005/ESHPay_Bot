@@ -9,7 +9,6 @@ from settings.setings import url
 def main():
     last_update_id = 0
     while True:
-        time.sleep(1)
         try:
             response = requests.get(f'{url}getUpdates', params={'offset': last_update_id, 'timeout': 10}).json()
             get_chak_mess(response)

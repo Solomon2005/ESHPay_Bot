@@ -2,7 +2,6 @@ import requests
 import json
 from settings.setings import url_book
 
-url = url_book
 
 def get_inf_book(query,limit):
     params = {
@@ -12,11 +11,11 @@ def get_inf_book(query,limit):
         "language": 'rus'
     }
 
-    response = requests.get(url, params=params)
+    response = requests.get(url_book, params=params)
 
     if response.status_code == 200:
         books = response.json()['docs']
-        print(len(books))
+
         all_book=[]
         for book in books:
             title = book.get('title')
@@ -30,5 +29,3 @@ def get_inf_book(query,limit):
     else:
         print (response.status_code)
         return []
-
-print(get_inf_book("exercise", 3))
