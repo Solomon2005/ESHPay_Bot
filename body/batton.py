@@ -9,7 +9,6 @@ def start_button_message(chat_id):
         'inline_keyboard': [
             [{"text": " Поиск", "callback_data": "btnSearch"}],
             [{"text": " Заметки", "callback_data": "btnNotes"}],
-            [{"text": " Мои Заметки", "callback_data": "MYbtnNotes"}],
             [{"text": " Коты", "callback_data": "btnCats"}],
             [{"text": " Локация", "callback_data": "btnLocation"}]
         ]
@@ -50,7 +49,18 @@ def Search_genre_button_message(chat_id):
     return requests.post(f'{url}{"sendMessage"}', params=params)
 
 
+def Notes_button_message(chat_id):
+    keyboard = {
+        'inline_keyboard': [
+            [{"text": " Добавить Заметки", "callback_data": "addNotes"}],
+            [{"text": " Мои Заметки", "callback_data": "MYbtnNotes"}],
+            [{"text": " Удалить Заметки", "callback_data": "DelNotes"}]
+        ]
+    }
 
-
-
-
+    params = {
+        "chat_id": chat_id,
+        "text": '',
+        "reply_markup": json.dumps(keyboard)
+    }
+    return requests.post(f'{url}{"sendMessage"}', params=params)

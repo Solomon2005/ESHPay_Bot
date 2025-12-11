@@ -40,9 +40,15 @@ def buttom_message(callback):
     text = callback['data']
     if text == 'btnSearch':
         Search_genre_button_message(chat_id)
+    #Заметки
     if text == "btnNotes":
+        Notes_button_message(chat_id)
+    if text == "addNotes":
         send_message_text(chat_id,"Напишите ваши заметки к книгам через:"
-                                  '\n"Заметка:_"')
+                '\n"Заметка:_"')
+    if text == "DelNotes":
+        send_message_text(chat_id,"Удалены")
+    #Коты
     if text == "btnCats":
         send_message_text(chat_id,'Коты')
     if text == "btnLocation":
