@@ -30,20 +30,12 @@ def messages(message):
             from Data.Data import add_new_notes
             add_new_notes(message)
             send_message_text(chat_id,'Заметка сохранена')
-        if 'стр' in text:
-            if text[3:].isnumeric() == True:
-                pass
-            else:
-                send_message_text(chat_id, "Число не правильно введено")
-
-            send_message_text(chat_id, 'Число')
     if 'photo' in message:
         send_message_text(chat_id,"нахуй мне твоё фото")
     if 'document' in message:
         send_message_text(chat_id,"Засунь себе свой документ")
 
 def buttom_message(callback):
-    limit = 0
     chat_id = callback['from']['id']
     text = callback['data']
     if text == 'btnSearch':
@@ -66,8 +58,7 @@ def buttom_message(callback):
             send_message_text(chat_id,"Что-то сломалось")
 
     if text == 'fantasy':
-        send_message_text(chat_id, "Сколько произведений?")
-        get_inf_book('fantasy', )
+        get_inf_book('fantasy',10)
 
 
 
