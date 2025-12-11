@@ -9,6 +9,7 @@ def start_button_message(chat_id):
         'inline_keyboard': [
             [{"text": " Поиск", "callback_data": "btnSearch"}],
             [{"text": " Заметки", "callback_data": "btnNotes"}],
+            [{"text": " Мои Заметки", "callback_data": "MYbtnNotes"}],
             [{"text": " Коты", "callback_data": "btnCats"}],
             [{"text": " Локация", "callback_data": "btnLocation"}]
         ]

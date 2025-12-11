@@ -1,10 +1,12 @@
 import requests
 import json
-from settings.setings import url_bot
+
+from book_inf.Get_rest_inf import get_inf_book
+from settings.setings import url_bot, url
+from book_inf.Get_rest_inf import get_inf_book
 from body.batton import *
 
 
-url = f'https://api.telegram.org/bot{url_bot}/'
 
 def get_chak_mess(message):
     print(json.dumps(message, indent=4,  ensure_ascii=False))
@@ -24,22 +26,48 @@ def messages(message):
             start_button_message(chat_id)
         if text == '/help':
             send_message_text(chat_id,'помощь')
+        if 'Заметка:' in text:
+            from Data.Data import add_new_notes
+            add_new_notes(message)
+            send_message_text(chat_id,'Заметка сохранена')
+        if 'стр' in text:
+            if text[3:].isnumeric() == True:
+                pass
+            else:
+                send_message_text(chat_id, "Число не правильно введено")
+
+            send_message_text(chat_id, 'Число')
     if 'photo' in message:
         send_message_text(chat_id,"нахуй мне твоё фото")
     if 'document' in message:
         send_message_text(chat_id,"Засунь себе свой документ")
 
 def buttom_message(callback):
+    limit = 0
     chat_id = callback['from']['id']
     text = callback['data']
     if text == 'btnSearch':
         Search_genre_button_message(chat_id)
     if text == "btnNotes":
-        send_message_text(chat_id,"Заметки")
+        send_message_text(chat_id,"Напишите ваши заметки к книгам через:"
+                                  '\n"Заметка:_"')
     if text == "btnCats":
         send_message_text(chat_id,'Коты')
     if text == "btnLocation":
         send_message_text(chat_id, 'Локация')
+    if text == "MYbtnNotes":
+        from Data.Data import get_notes_csv
+        try:
+            send_message_text(chat_id, 'Мои Заметки'
+                                       '\n ---------------- ')
+            get_notes_csv(callback)
+            send_message_text(chat_id, '---------------- ')
+        except:
+            send_message_text(chat_id,"Что-то сломалось")
+
+    if text == 'fantasy':
+        send_message_text(chat_id, "Сколько произведений?")
+        get_inf_book('fantasy', )
 
 
 

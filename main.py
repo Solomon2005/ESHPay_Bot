@@ -1,10 +1,9 @@
 import time
+import requests
 
-from Data.Data import *
-from body.batton import *
-from settings.setings import *
-from body import *
-from utils.utils import *
+from Data.Data import chack_Notes_csv
+from utils.utils import get_chak_mess, messages, buttom_message
+from settings.setings import url
 
 
 def main():
