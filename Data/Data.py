@@ -1,7 +1,6 @@
 import os
 import csv
 
-from settings.setings import url_bot, url
 from utils.utils import send_message_text
 
 
@@ -23,6 +22,23 @@ def add_new_notes(message):
 
     except ValueError:
         send_message_text(chat_id, "Заметка не получилась")
+
+def chack_Start_csv():
+    if not os.path.exists('dataStart.csv'):
+        with open('dataStart.csv', 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['ID','Name'])
+
+def add_new_Start(message):
+    chat_id = message['chat']['id']
+    try:
+        name = message['chat'].get('username') or message['chat'].get('first_name')
+        new_row=[chat_id, name]
+        with open('dataStart.csv', 'a', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(new_row)
+    except ValueError:
+        print('Ошибка')
 
 def get_notes_csv(callback):
     chat_id = callback['from']['id']
