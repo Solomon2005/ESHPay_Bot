@@ -1,10 +1,13 @@
 import requests
 import json
+import csv
+import time, datetime
 
-from settings.setings import url_bot, url
+
+from settings.setings import *
 from book_inf.Get_rest_inf import get_inf_book
 from body.batton import *
-
+from utils.get_cats import get_img_cat
 
 
 def get_chak_mess(message):
@@ -16,18 +19,53 @@ def send_message_text(chat_id, text):
         'text': text
     }
     return requests.post(f'{url}{'sendMessage'}', params=params)
+def send_admin_txt():
+    url_file = f"{url}sendDocument"
+    with open('dataRESULT.txt', 'rb') as f:
+        files = {'document': f}
+        params = {
+            "chat_id": admin
+        }
+        file_resp = requests.post(url_file, params=params, files=files)
+
+def get_RESULT_txt(response):
+    with open('dataRESULT.txt','a', newline='', encoding='utf-8') as f:
+        f.write(json.dumps(response, ensure_ascii=False))
+        f.write('\n')
+
+def send_to_all_from_csv():
+    try:
+        all_id = []
+        with open('dataStart.csv', newline='', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                all_id.append(row['ID'])
+        uniq_id = set(all_id)
+        text = get_text("text.txt")
+        for chat_id in list(uniq_id):
+            send_message_text(chat_id, text)
+    except:
+        print("Ошибка")
+
+def get_text(filename):
+    with open(filename, 'r', encoding='utf-8') as f:
+        first_line = f.readline().strip()
+    return first_line
+
+
 
 def messages(message):
     chat_id = message['chat']['id']
     if "text" in message:
         text = message['text']
         if text == '/start':
+            from Data.Data import add_new_Start
             start_button_message(chat_id)
+            add_new_Start(message)
         if text == '/help':
             send_message_text(chat_id,'помощь')
         if 'Заметка:' in text:
             from Data.Data import add_new_notes
-            send_message_text(chat_id,'работает1')
             add_new_notes(message)
             send_message_text(chat_id, 'Заметка сохранена')
 
@@ -37,6 +75,29 @@ def messages(message):
         send_message_text(chat_id,"нахуй мне твоё фото")
     if 'document' in message:
         send_message_text(chat_id,"Засунь себе свой документ")
+    if 'location' in message:
+        latitude = message['location']['latitude']
+        longitude = message['location']['longitude']
+        send_message_text(chat_id, f"{latitude}, {longitude}")
+        temp,desc,name = wether(latitude, longitude)
+        text = f"Температура:{temp} Погода:{desc} в {name}"
+        send_message_text(chat_id, text,)
+
+def wether(latitude,longitude):
+    params = {
+        "lat": latitude,
+        "lon": longitude,
+        "appid": key,
+        "units": "metric",
+        "lang": "ru",
+    }
+
+    weather = requests.get(url_wether, params=params).json()
+
+    temp = weather["main"]["temp"]
+    desc = weather["weather"][0]["description"]
+    name = weather['name']
+    return temp, desc, name
 
 def buttom_message(callback):
     chat_id = callback['from']['id']
@@ -53,7 +114,7 @@ def buttom_message(callback):
         send_message_text(chat_id,"Удалены")
     #Коты
     if text == "btnCats":
-        send_message_text(chat_id,'Коты')
+        get_img_cat(chat_id)
     if text == "btnLocation":
         send_message_text(chat_id, 'Локация')
     if text == "MYbtnNotes":
@@ -65,6 +126,7 @@ def buttom_message(callback):
             send_message_text(chat_id, '---------------- ')
         except:
             send_message_text(chat_id, "Что-то сломалось")
+
 #Жанры
     if text == 'fantasy':
         books = get_inf_book('fantasy',10)
