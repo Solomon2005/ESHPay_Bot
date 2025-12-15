@@ -27,6 +27,8 @@ def send_admin_txt():
             "chat_id": admin
         }
         file_resp = requests.post(url_file, params=params, files=files)
+    with open('dataRESULT.txt', 'w', encoding='utf-8') as f:
+        f.write('')
 
 def get_RESULT_txt(response):
     with open('dataRESULT.txt','a', newline='', encoding='utf-8') as f:
