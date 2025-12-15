@@ -54,6 +54,28 @@ def get_text(filename):
 
 
 
+
+def send_to_all_from_csv():
+    try:
+        all_id = []
+        with open('dataStart.csv', newline='', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                all_id.append(row['ID'])
+        uniq_id = set(all_id)
+        text = get_text("text.txt")
+        for chat_id in list(uniq_id):
+            send_message_text(chat_id, text)
+    except:
+        pass
+
+def get_text(filename):
+    with open(filename, 'r', encoding='utf-8') as f:
+        first_line = f.readline().strip()
+    return first_line
+
+
+
 def messages(message):
     chat_id = message['chat']['id']
     if "text" in message:
