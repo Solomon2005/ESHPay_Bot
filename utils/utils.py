@@ -19,6 +19,7 @@ def send_message_text(chat_id, text):
         'text': text
     }
     return requests.post(f'{url}{'sendMessage'}', params=params)
+
 def send_admin_txt():
     url_file = f"{url}sendDocument"
     with open('dataRESULT.txt', 'rb') as f:
@@ -27,6 +28,8 @@ def send_admin_txt():
             "chat_id": admin
         }
         file_resp = requests.post(url_file, params=params, files=files)
+    with open('dataRESULT.txt', 'w', encoding='utf-8') as f:
+        f.write('')
 
 def get_RESULT_txt(response):
     with open('dataRESULT.txt','a', newline='', encoding='utf-8') as f:
@@ -53,29 +56,6 @@ def get_text(filename):
     return first_line
 
 
-
-
-def send_to_all_from_csv():
-    try:
-        all_id = []
-        with open('dataStart.csv', newline='', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                all_id.append(row['ID'])
-        uniq_id = set(all_id)
-        text = get_text("text.txt")
-        for chat_id in list(uniq_id):
-            send_message_text(chat_id, text)
-    except:
-        pass
-
-def get_text(filename):
-    with open(filename, 'r', encoding='utf-8') as f:
-        first_line = f.readline().strip()
-    return first_line
-
-
-
 def messages(message):
     chat_id = message['chat']['id']
     if "text" in message:
@@ -100,7 +80,6 @@ def messages(message):
     if 'location' in message:
         latitude = message['location']['latitude']
         longitude = message['location']['longitude']
-        send_message_text(chat_id, f"{latitude}, {longitude}")
         temp,desc,name = wether(latitude, longitude)
         text = f"Температура:{temp} Погода:{desc} в {name}"
         send_message_text(chat_id, text,)
@@ -138,7 +117,7 @@ def buttom_message(callback):
     if text == "btnCats":
         get_img_cat(chat_id)
     if text == "btnLocation":
-        send_message_text(chat_id, 'Локация')
+        send_message_text(chat_id, 'Отправь свою локацию')
     if text == "MYbtnNotes":
         from Data.Data import get_notes_csv
         try:
