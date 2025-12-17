@@ -106,8 +106,6 @@ def messages(message):
         send_message_text(chat_id, text,)
     if 'sticker' in message:
         send_message_text(chat_id, "Стикеры не обрабатываются")
-    else:
-        send_message_text(chat_id, "Данный тип сообщений не обрабатывается")
 
 def wether(latitude,longitude):
     params = {
