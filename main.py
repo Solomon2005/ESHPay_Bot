@@ -1,17 +1,18 @@
-import time, datetime
+import time
 import requests
 import schedule
 
-from Data.Data import *
+from data.data import *
 from utils.utils import *
 from settings.setings import url
 
+print(get_id_admin())
 
 def main():
     last_update_id = 0
 
-    schedule.every().day.at("08:00").do(send_to_all_from_csv)
-    schedule.every().day.at("23:55").do(send_admin_txt)
+    schedule.every().day.at(get_json_data("StartTime")).do(send_to_all_from_csv)
+    schedule.every().day.at(get_json_data("EndTime")).do(send_admin_txt)
     while True:
         try:
             response = requests.get(f'{url}getUpdates', params={'offset': last_update_id, 'timeout': 10}).json()

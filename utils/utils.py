@@ -9,6 +9,21 @@ from book_inf.Get_rest_inf import get_inf_book
 from body.batton import *
 from utils.get_cats import get_img_cat
 
+def get_id_admin():
+    with open('config.json') as f:
+        fson_object = json.load(f)
+        admin_id =[]
+        for item in fson_object:
+            if 'ID' in item:
+                admin_id.append(item['ID'])
+        return admin_id
+
+def get_json_data(object):
+    with open('task.json') as f:
+        json_object = json.load(f)
+        for elem in json_object:
+            if object in elem:
+                return (elem[object])
 
 def get_chak_mess(message):
     print(json.dumps(message, indent=4,  ensure_ascii=False))
@@ -21,13 +36,14 @@ def send_message_text(chat_id, text):
     return requests.post(f'{url}{'sendMessage'}', params=params)
 
 def send_admin_txt():
+    admin = get_id_admin()
     url_file = f"{url}sendDocument"
-    with open('dataRESULT.txt', 'rb') as f:
-        files = {'document': f}
-        params = {
-            "chat_id": admin
-        }
-        file_resp = requests.post(url_file, params=params, files=files)
+    for chat_id in admin:
+        with open('dataRESULT.txt', 'rb') as f:
+            print(chat_id)
+            files = {'document': f}
+            params = {"chat_id": chat_id}
+            file_resp = requests.post(url_file, params=params, files=files)
     with open('dataRESULT.txt', 'w', encoding='utf-8') as f:
         f.write('')
 
@@ -61,13 +77,13 @@ def messages(message):
     if "text" in message:
         text = message['text']
         if text == '/start':
-            from Data.Data import add_new_Start
+            from data.data import add_new_Start
             start_button_message(chat_id)
             add_new_Start(message)
         if text == '/help':
             send_message_text(chat_id,'помощь')
         if 'Заметка:' in text:
-            from Data.Data import add_new_notes
+            from data.data import add_new_notes
             add_new_notes(message)
             send_message_text(chat_id, 'Заметка сохранена')
 
@@ -119,7 +135,7 @@ def buttom_message(callback):
     if text == "btnLocation":
         send_message_text(chat_id, 'Отправь свою локацию')
     if text == "MYbtnNotes":
-        from Data.Data import get_notes_csv
+        from data.data import get_notes_csv
         try:
             send_message_text(chat_id, 'Мои Заметки'
                                        '\n ---------------- ')
@@ -238,3 +254,4 @@ def buttom_message(callback):
                 authors = ", ".join(authors)
             msg += f"{i}. {title} — {authors}\n"
         send_message_text(chat_id, msg)
+
