@@ -10,20 +10,26 @@ from body.batton import *
 from utils.get_cats import get_img_cat
 
 def get_id_admin():
-    with open('config.json') as f:
-        fson_object = json.load(f)
-        admin_id =[]
-        for item in fson_object:
-            if 'ID' in item:
-                admin_id.append(item['ID'])
-        return admin_id
+    try:
+        with open('config.json') as f:
+            fson_object = json.load(f)
+            admin_id =[]
+            for item in fson_object:
+                if 'ID' in item:
+                    admin_id.append(item['ID'])
+            return admin_id
+    except:
+        print("проблема в блоке с сообщениями админу")
 
 def get_json_data(object):
-    with open('task.json') as f:
-        json_object = json.load(f)
-        for elem in json_object:
-            if object in elem:
-                return (elem[object])
+    try:
+        with open('task.json') as f:
+            json_object = json.load(f)
+            for elem in json_object:
+                if object in elem:
+                    return (elem[object])
+    except:
+        print("проблема в блоке с определением времени")
 
 def get_chak_mess(message):
     print(json.dumps(message, indent=4,  ensure_ascii=False))
@@ -40,7 +46,6 @@ def send_admin_txt():
     url_file = f"{url}sendDocument"
     for chat_id in admin:
         with open('dataRESULT.txt', 'rb') as f:
-            print(chat_id)
             files = {'document': f}
             params = {"chat_id": chat_id}
             file_resp = requests.post(url_file, params=params, files=files)
@@ -64,7 +69,7 @@ def send_to_all_from_csv():
         for chat_id in list(uniq_id):
             send_message_text(chat_id, text)
     except:
-        print("Ошибка")
+        print("Нету файла dataStart.csv")
 
 def get_text(filename):
     with open(filename, 'r', encoding='utf-8') as f:
@@ -77,13 +82,13 @@ def messages(message):
     if "text" in message:
         text = message['text']
         if text == '/start':
-            from data.data import add_new_Start
+            from Data.data import add_new_Start
             start_button_message(chat_id)
             add_new_Start(message)
         if text == '/help':
             send_message_text(chat_id,'помощь')
         if 'Заметка:' in text:
-            from data.data import add_new_notes
+            from Data.data import add_new_notes
             add_new_notes(message)
             send_message_text(chat_id, 'Заметка сохранена')
 
@@ -99,6 +104,10 @@ def messages(message):
         temp,desc,name = wether(latitude, longitude)
         text = f"Температура:{temp} Погода:{desc} в {name}"
         send_message_text(chat_id, text,)
+    if 'sticker' in message:
+        send_message_text(chat_id, "Стикеры не обрабатываются")
+    else:
+        send_message_text(chat_id, "Данный тип сообщений не обрабатывается")
 
 def wether(latitude,longitude):
     params = {
@@ -118,7 +127,7 @@ def wether(latitude,longitude):
 
 def buttom_message(callback):
     chat_id = callback['from']['id']
-    text = callback['data']
+    text = callback['Data']
     if text == 'btnSearch':
         Search_genre_button_message(chat_id)
     #Заметки
@@ -135,7 +144,7 @@ def buttom_message(callback):
     if text == "btnLocation":
         send_message_text(chat_id, 'Отправь свою локацию')
     if text == "MYbtnNotes":
-        from data.data import get_notes_csv
+        from Data.data import get_notes_csv
         try:
             send_message_text(chat_id, 'Мои Заметки'
                                        '\n ---------------- ')

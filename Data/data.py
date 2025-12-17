@@ -3,7 +3,6 @@ import csv
 
 from utils.utils import send_message_text
 
-
 def chack_Notes_csv():
     if not os.path.exists('dataNotes.csv'):
         with open('dataNotes.csv', 'w', newline='', encoding='utf-8') as f:

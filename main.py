@@ -2,11 +2,10 @@ import time
 import requests
 import schedule
 
-from data.data import *
+from Data.data import *
 from utils.utils import *
 from settings.setings import url
 
-print(get_id_admin())
 
 def main():
     last_update_id = 0
