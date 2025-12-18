@@ -6,17 +6,20 @@ import time, datetime
 
 from settings.setings import *
 from book_inf.Get_rest_inf import get_inf_book
-from body.batton import *
+from body.batton import start_button_message, Search_genre_button_message, Notes_button_message
 from utils.get_cats import get_img_cat
 
 def get_id_admin():
-    with open('config.json') as f:
-        fson_object = json.load(f)
-        admin_id =[]
-        for item in fson_object:
-            if 'ID' in item:
-                admin_id.append(item['ID'])
-        return admin_id
+    try:
+        with open('config.json') as f:
+            fson_object = json.load(f)
+            admin_id =[]
+            for item in fson_object:
+                if 'ID' in item:
+                    admin_id.append(item['ID'])
+            return admin_id
+    except:
+        print("Проблема с id админа")
 
 def get_json_data(object):
     with open('task.json') as f:
@@ -26,7 +29,10 @@ def get_json_data(object):
                 return (elem[object])
 
 def get_chak_mess(message):
-    print(json.dumps(message, indent=4,  ensure_ascii=False))
+    try:
+        print(json.dumps(message, indent=4,  ensure_ascii=False))
+    except:
+        print("ошибка в проверки сообщения")
 
 def send_message_text(chat_id, text):
     params = {

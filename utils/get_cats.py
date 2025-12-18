@@ -21,6 +21,7 @@ def get_img_cat(chat_id):
         mes_resp = requests.post(url, params=params, data=data)
 
     except:
+        print("нет подключения к API cataas")
         num = random.randint(1, 5)
         with open(f"utils/cats/{num}.jpg", mode='rb') as f:
             img = f.read()

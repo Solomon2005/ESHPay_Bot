@@ -26,9 +26,10 @@ def main():
                     buttom_message(update['callback_query'])
 
             schedule.run_pending()
-            time.sleep(1)
+            time.sleep(2)
         except:
-            print("Something went wrong")
+            print("Возможно нету интернета"
+                  "\nЧто-то в ключевой функции не так")
             time.sleep(3)
 
 

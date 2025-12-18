@@ -58,7 +58,7 @@ def Notes_button_message(chat_id):
 
     params = {
         "chat_id": chat_id,
-        "text": ' ',
+        "text": 'Кнопки для заметок',
         "reply_markup": json.dumps(keyboard)
     }
     return requests.post(f'{url}{"sendMessage"}', params=params)
