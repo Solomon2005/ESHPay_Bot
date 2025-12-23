@@ -18,7 +18,7 @@ usertag: @I_notnow_bot
 --> Проверяет на наличие файла dataNotes.csv, при его отсутствии создаёт его
 --> Записывает заметки в csv таблицу и выводит записанные заметки в отдельных сообщениях
 --> Реагирует на разный формат сообщений
---> На формат location отправляет температуру, погоду и приблизительно где это находится
+--> На формат location отправляет название приблизительной локации по широте и долготе
 --> Выводит 10 книг и их автора/авторов на выбранную тему
 Библиотеки:
 -> dotenv - позволяет загружать переменные окружения из файла .env
@@ -27,7 +27,7 @@ usertag: @I_notnow_bot
 Список API:
 -> openlibrary.org
 -> cataas.com
--> api.openweathermap.org
+-> catalog.api.2gis.com
 Источники:
 -> Документации:
 --> https://pypi.org/project/python-dotenv/
@@ -47,3 +47,4 @@ usertag: @I_notnow_bot
 --> https://openlibrary.org/developers/api # руководство по работе с API openlibrary
 --> https://cataas.com/ # руководство по API cataas
 --> https://metanit.com/python/tutorial/2.11.php # try except
+--> https://docs.2gis.com/api/search/geocoder/overview # работа для api 2 гис
