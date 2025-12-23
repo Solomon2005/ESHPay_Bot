@@ -102,28 +102,27 @@ def messages(message):
     if 'location' in message:
         latitude = message['location']['latitude']
         longitude = message['location']['longitude']
-        temp,desc,name = wether(latitude, longitude)
-        text = f"Температура:{temp} Погода:{desc} в {name}"
+        full_name = wether(latitude, longitude)
+        text = f"Вы сейчас в {full_name}"
         send_message_text(chat_id, text,)
     if "sticker" in message:
         send_message_text(chat_id, "Не обрабатываем стикеры")
 
 
 def wether(latitude,longitude):
-    params = {
-        "lat": latitude,
-        "lon": longitude,
-        "appid": key,
-        "units": "metric",
-        "lang": "ru",
-    }
+    try:
+        params = {
+            "lat": latitude,
+            "lon": longitude,
+            "field": "items.point",
+            "key": key_wether,
+        }
 
-    weather = requests.get(url_wether, params=params).json()
-
-    temp = weather["main"]["temp"]
-    desc = weather["weather"][0]["description"]
-    name = weather['name']
-    return temp, desc, name
+        weather = requests.get(url_wether, params=params).json()
+        full_name = weather["result"]["items"][0]["full_name"]
+        return full_name
+    except:
+        print("Возможно закончились запросы")
 
 def buttom_message(callback):
     chat_id = callback['from']['id']
