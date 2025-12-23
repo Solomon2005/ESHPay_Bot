@@ -9,6 +9,7 @@ url = f'https://api.telegram.org/bot{url_bot}/sendPhoto'
 
 def get_img_cat(chat_id):
     try:
+        print('коты ищутся')
         ts = int(time.time())
         response = requests.get(url_cat)
         params = {
